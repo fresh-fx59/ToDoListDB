@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список дел</title>
+    <script src="/js/jquery-3.4.0.min.js"></script>
+    <script src="/js/main.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+    <div id="toDo-form">
+        <form>
+            <h2>Добавить дело</h2>
+            <label>Описание дела:</label>
+            <input type="text" name="description" value="">
+            <label for="isDone">Сделано или нет:</label>
+
+            <select name="isDone" id="isDone">
+                <option value="true">Сделано</option>
+                <option value="false" selected>Не сделано</option>
+            </select>
+            <hr>
+            <button id="save-toDo">Сохранить</button>
+        </form>
+    </div>
+    <h1>Созданные дела (<span th:text="${toDoCount}">0</span>)</h1>
+    <button id="show-add-toDo-form">Добавить дело</button>
+    <br><br>
+    <div id="toDo-list">
+        <div th:each="toDo : ${toDos}">
+            <a href="#" class="toDo-link"
+               th:attr="data-id=${toDo.id}"
+               th:text="${toDo.description}"></a>
+        </div>
+    </div>
+    <p th:text="${someParameter}"></p>
+</body>
+</html>
