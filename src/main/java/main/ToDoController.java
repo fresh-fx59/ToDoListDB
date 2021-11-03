@@ -7,7 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+
+import static java.util.Objects.isNull;
 
 @RestController
 public class ToDoController {
@@ -23,13 +29,17 @@ public class ToDoController {
 
     @GetMapping("/todos/")
     public List<ToDo> list() {
-        return toDoDao.getAll();
+        if (isNull(toDoDao.getAll())) {
+            return new ArrayList<>(Arrays.asList(new ToDo("There are no toDos")));
+        } else {
+            return toDoDao.getAll();
+        }
     }
 
     @PostMapping("/todos/")
     public ResponseEntity<?> add(ToDo toDo) {
-        toDoDao.add(toDo);
-        return ResponseEntity.status(HttpStatus.CREATED).body("New ToDo successfully created!");
+        int toDoId = toDoDao.add(toDo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(toDoId);
     }
 
     @DeleteMapping("/todos/{id}")
@@ -54,11 +64,6 @@ public class ToDoController {
                 ResponseEntity.status(HttpStatus.NOT_FOUND).body("Can't get ToDo " +
                         id + " because it doesn't exist.") :
                 new ResponseEntity<>(toDoDao.get(id), HttpStatus.OK);
-    }
-
-    @PutMapping("/todos/")
-    public ResponseEntity<?> updateAll(List<ToDo> todos) {
-        return null;
     }
 
     @PutMapping("/todos/{id}")

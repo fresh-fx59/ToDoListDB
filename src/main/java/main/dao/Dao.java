@@ -12,7 +12,7 @@ public interface Dao<T> {
 
     List<T> getAll();
 
-    void add(ToDo toDo);
+    int add(ToDo toDo);
 
     boolean delete(int id);
 

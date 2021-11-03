@@ -12,6 +12,8 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <spring-version>2.1.4.RELEASE</spring-version>
+        <testcontainers-version>1.16.2</testcontainers-version>
+        <junit-version>5.4.2</junit-version>
     </properties>
     <build>
         <plugins>
@@ -19,6 +21,19 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.0.0-M4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -39,11 +54,19 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
             <version>${spring-version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.26</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>2.5.6</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql
+        docker run -n postgres-container -e POSTGRES_PASSWORD=12345678 -d -p 5432:5432 postgres-->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -55,5 +78,26 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
             <version>2.1.4.RELEASE</version>
         </dependency>
+        <!--START https://www.testcontainers.org/quickstart/junit_5_quickstart/-->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>${testcontainers-version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${testcontainers-version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${testcontainers-version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!--END https://www.testcontainers.org/quickstart/junit_5_quickstart/-->
     </dependencies>
+
 </project>

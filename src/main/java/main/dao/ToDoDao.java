@@ -12,7 +12,7 @@ import java.util.List;
 public class ToDoDao implements Dao<ToDo> {
 
     @Autowired
-    ToDoRepository toDoRepository;
+    private ToDoRepository toDoRepository;
 
     @Override
     public boolean updateToDo(int id, String description, boolean isDone) {
@@ -54,8 +54,9 @@ public class ToDoDao implements Dao<ToDo> {
     }
 
     @Override
-    public void add(ToDo toDo) {
+    public int add(ToDo toDo) {
         toDoRepository.save(toDo);
+        return toDo.getId();
     }
 
     @Override
@@ -64,6 +65,9 @@ public class ToDoDao implements Dao<ToDo> {
         Iterable<ToDo> toDoIterable = toDoRepository.findAll();
         for (ToDo toDo : toDoIterable) {
             toDos.add(toDo);
+        }
+        if (toDos.size() == 0) {
+            toDos = null;
         }
         return toDos;
     }
